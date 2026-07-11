@@ -1,0 +1,9 @@
+flask==3.1.1
+flask-socketio==5.5.1
+flask-cors==5.0.1
+requests==2.32.3
+beautifulsoup4==4.13.4
+lxml==5.4.0
+phonenumbers==8.13.52
+openpyxl==3.1.5
+eventlet==0.39.1

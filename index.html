@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LeadScraper Pro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f1117;--bg2:#1a1d2e;--bg3:#1e2235;--bg4:#252a40;--bgi:#141727;--bdr:#2a2f45;--t1:#f1f5f9;--t2:#94a3b8;--tm:#64748b;--ac:#6366f1;--ah:#818cf8;--ag:rgba(99,102,241,.25);--ok:#22c55e;--okb:rgba(34,197,94,.12);--wn:#f59e0b;--wnb:rgba(245,158,11,.12);--er:#ef4444;--erb:rgba(239,68,68,.12);--in:#3b82f6;--inb:rgba(59,130,246,.12);--g1:linear-gradient(135deg,#6366f1,#8b5cf6);--g2:linear-gradient(135deg,#3b82f6,#06b6d4);--g3:linear-gradient(135deg,#f59e0b,#ef4444);--sh:0 12px 40px rgba(0,0,0,.5);--sg:0 0 30px var(--ag);--r:8px;--tr:.2s cubic-bezier(.4,0,.2,1)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;scroll-behavior:smooth}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--t1);line-height:1.6;min-height:100vh;overflow-x:hidden}
+a{color:var(--ac);text-decoration:none}a:hover{color:var(--ah)}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg2)}::-webkit-scrollbar-thumb{background:var(--bdr);border-radius:3px}
+.app{display:flex;min-height:100vh}
+.side{width:260px;background:var(--bg2);border-right:1px solid var(--bdr);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100}
+.side-brand{padding:24px 20px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:12px}
+.side-brand .logo{width:40px;height:40px;background:var(--g1);border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:#fff;box-shadow:var(--sg)}
+.side-brand h1{font-size:1.15rem;font-weight:700;background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.side-brand span{font-size:.7rem;color:var(--tm);text-transform:uppercase;letter-spacing:1px}
+.side-nav{flex:1;padding:16px 12px;display:flex;flex-direction:column;gap:4px}
+.nav-item{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:var(--r);color:var(--t2);font-size:.9rem;font-weight:500;cursor:pointer;transition:all var(--tr);border:none;background:none;width:100%;text-align:left;font-family:inherit}
+.nav-item:hover{background:var(--bg3);color:var(--t1)}.nav-item.active{background:var(--ag);color:var(--ac)}
+.nav-item .icon{width:20px;text-align:center;font-size:1rem}
+.nav-sec{font-size:.7rem;text-transform:uppercase;letter-spacing:1.2px;color:var(--tm);padding:16px 14px 8px;font-weight:600}
+.main{margin-left:260px;flex:1;padding:32px 40px;min-height:100vh}
+.pg-hdr{margin-bottom:32px}.pg-hdr h2{font-size:1.75rem;font-weight:700;margin-bottom:4px}.pg-hdr p{color:var(--t2);font-size:.95rem}
+.sg{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;margin-bottom:32px}
+.sc{background:var(--bg3);border:1px solid var(--bdr);border-radius:12px;padding:24px;position:relative;overflow:hidden;transition:all var(--tr)}
+.sc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:12px 12px 0 0}
+.sc.p::before{background:var(--g1)}.sc.b::before{background:var(--g2)}.sc.g::before{background:var(--ok)}.sc.o::before{background:var(--g3)}
+.sc:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.4);border-color:var(--ac)}
+.sc .si{width:44px;height:44px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:1.2rem;margin-bottom:16px}
+.sc.p .si{background:var(--ag);color:var(--ac)}.sc.b .si{background:var(--inb);color:var(--in)}.sc.g .si{background:var(--okb);color:var(--ok)}.sc.o .si{background:var(--wnb);color:var(--wn)}
+.sc .sv{font-size:2rem;font-weight:800;line-height:1;margin-bottom:4px}.sc .sl{font-size:.85rem;color:var(--t2)}
+.card{background:var(--bg3);border:1px solid var(--bdr);border-radius:12px;overflow:hidden;margin-bottom:24px}
+.card-h{padding:20px 24px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between}
+.card-h h3{font-size:1.05rem;font-weight:600}.card-b{padding:24px}
+.fg{margin-bottom:20px}.fg label{display:block;font-size:.85rem;font-weight:600;color:var(--t2);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px}
+.fi{width:100%;padding:12px 16px;background:var(--bgi);border:1px solid var(--bdr);border-radius:var(--r);color:var(--t1);font-size:.95rem;font-family:inherit;transition:all var(--tr);outline:none}
+.fi:focus{border-color:var(--ac);box-shadow:0 0 0 3px var(--ag)}.fi::placeholder{color:var(--tm)}
+.cg{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.ci{display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--bgi);border:1px solid var(--bdr);border-radius:var(--r);cursor:pointer;transition:all var(--tr);user-select:none}
+.ci:hover{border-color:var(--ac);background:var(--bg4)}
+.ci input[type="checkbox"]{appearance:none;-webkit-appearance:none;width:18px;height:18px;border:2px solid var(--bdr);border-radius:4px;cursor:pointer;position:relative;transition:all var(--tr);flex-shrink:0}
+.ci input:checked{background:var(--ac);border-color:var(--ac)}.ci input:checked::after{content:'✓';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#fff;font-size:12px;font-weight:700}
+.ci .cl{font-size:.9rem;font-weight:500}.ci .cd{font-size:.75rem;color:var(--tm)}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:var(--r);font-size:.9rem;font-weight:600;font-family:inherit;cursor:pointer;border:none;transition:all var(--tr);white-space:nowrap}
+.btn-p{background:var(--g1);color:#fff;box-shadow:0 2px 8px var(--ag)}.btn-p:hover{transform:translateY(-1px);box-shadow:0 4px 16px var(--ag)}
+.btn-s{background:var(--bg4);color:var(--t1);border:1px solid var(--bdr)}.btn-s:hover{border-color:var(--ac);background:var(--ag)}
+.btn-ok{background:var(--ok);color:#fff}.btn-ok:hover{background:#16a34a}
+.btn-sm{padding:8px 16px;font-size:.8rem}.btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+.pb{width:100%;height:8px;background:var(--bgi);border-radius:4px;overflow:hidden;margin:12px 0}
+.pf{height:100%;background:var(--g1);border-radius:4px;transition:width .4s ease;position:relative}
+.pf::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);animation:sh 1.5s infinite}
+@keyframes sh{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.tw{overflow-x:auto}table{width:100%;border-collapse:collapse}
+thead th{padding:12px 16px;text-align:left;font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--tm);border-bottom:1px solid var(--bdr);background:var(--bg2);position:sticky;top:0}
+tbody td{padding:12px 16px;font-size:.88rem;border-bottom:1px solid var(--bdr);color:var(--t2);max-width:250px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+tbody tr{transition:background var(--tr)}tbody tr:hover{background:var(--bg4)}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;font-size:.75rem;font-weight:600}
+.b-ok{background:var(--okb);color:var(--ok)}.b-wn{background:var(--wnb);color:var(--wn)}.b-er{background:var(--erb);color:var(--er)}.b-in{background:var(--inb);color:var(--in)}
+.sd{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px}
+.sd.running{background:var(--wn);animation:pu 1.5s infinite}.sd.completed{background:var(--ok)}.sd.pending{background:var(--tm)}.sd.failed{background:var(--er)}
+@keyframes pu{0%,100%{opacity:1}50%{opacity:.4}}
+.es{text-align:center;padding:60px 20px}.es .ei{font-size:3rem;margin-bottom:16px;opacity:.5}.es h3{font-size:1.1rem;margin-bottom:8px}.es p{color:var(--tm);font-size:.9rem;max-width:400px;margin:0 auto}
+.tc{position:fixed;top:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:8px}
+.toast{background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--r);padding:14px 20px;display:flex;align-items:center;gap:12px;box-shadow:var(--sh);animation:si .3s ease;min-width:300px}
+.toast.success{border-left:3px solid var(--ok)}.toast.error{border-left:3px solid var(--er)}.toast.info{border-left:3px solid var(--in)}
+.toast .tm{font-size:.9rem;color:var(--t1)}
+@keyframes si{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
+.spinner{width:20px;height:20px;border:2px solid var(--bdr);border-top-color:var(--ac);border-radius:50%;animation:sp .7s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.api-ep{background:var(--bgi);border:1px solid var(--bdr);border-radius:var(--r);padding:16px 20px;margin-bottom:16px}
+.api-m{display:inline-block;padding:3px 10px;border-radius:4px;font-size:.75rem;font-weight:700;text-transform:uppercase;margin-right:10px}
+.api-m.get{background:var(--inb);color:var(--in)}.api-m.post{background:var(--okb);color:var(--ok)}
+.api-p{font-family:'JetBrains Mono','Fira Code',monospace;font-size:.9rem;color:var(--t1)}
+pre{background:var(--bgi);border:1px solid var(--bdr);border-radius:var(--r);padding:16px;overflow-x:auto;font-size:.85rem;line-height:1.5;color:var(--t2);white-space:pre-wrap}
+code{font-family:'JetBrains Mono','Fira Code',monospace}
+@media(max-width:768px){.side{transform:translateX(-100%)}.side.open{transform:translateX(0)}.main{margin-left:0;padding:20px}.sg{grid-template-columns:repeat(2,1fr)}.cg{grid-template-columns:1fr}}
+.hidden{display:none!important}.flex{display:flex}.flex-col{flex-direction:column}.items-center{align-items:center}.justify-between{justify-content:space-between}.gap-2{gap:8px}.gap-3{gap:12px}.gap-4{gap:16px}.mt-2{margin-top:8px}.mt-4{margin-top:16px}.mb-4{margin-bottom:16px}.text-sm{font-size:.85rem}.text-muted{color:var(--tm)}.text-center{text-align:center}.w-full{width:100%}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="side" id="sidebar">
+  <div class="side-brand"><div class="logo">L</div><div><h1>LeadScraper</h1><span>Pro Edition</span></div></div>
+  <nav class="side-nav">
+    <div class="nav-sec">Main</div>
+    <button class="nav-item active" onclick="show('dash')"><span class="icon">📊</span> Dashboard</button>
+    <button class="nav-item" onclick="show('scrape')"><span class="icon">🔍</span> New Scrape</button>
+    <button class="nav-item" onclick="show('history')"><span class="icon">📋</span> Job History</button>
+    <div class="nav-sec">Tools</div>
+    <button class="nav-item" onclick="show('export')"><span class="icon">📥</span> Export Center</button>
+    <button class="nav-item" onclick="show('docs')"><span class="icon">📖</span> API Docs</button>
+  </nav>
+  <div style="padding:16px 12px;border-top:1px solid var(--bdr);font-size:.75rem;color:var(--tm);text-align:center">LeadScraper Pro v2.0</div>
+</aside>
+<main class="main">
+<div class="tc" id="toasts"></div>
+
+<!-- DASHBOARD -->
+<section id="s-dash">
+  <div class="pg-hdr"><h2>📊 Dashboard</h2><p>Overview of your lead generation activity</p></div>
+  <div class="sg">
+    <div class="sc p"><div class="si">🔍</div><div class="sv" id="st-j">0</div><div class="sl">Total Jobs</div></div>
+    <div class="sc b"><div class="si">👥</div><div class="sv" id="st-l">0</div><div class="sl">Leads Found</div></div>
+    <div class="sc g"><div class="si">✅</div><div class="sv" id="st-c">0</div><div class="sl">Completed</div></div>
+    <div class="sc o"><div class="si">⚡</div><div class="sv" id="st-r">0</div><div class="sl">Running</div></div>
+  </div>
+  <div class="card"><div class="card-h"><h3>Recent Jobs</h3><button class="btn btn-p btn-sm" onclick="show('scrape')">+ New Scrape</button></div>
+  <div class="card-b" id="recent"><div class="es"><div class="ei">🚀</div><h3>No jobs yet</h3><p>Start your first scrape to see results here</p></div></div></div>
+</section>
+
+<!-- NEW SCRAPE -->
+<section id="s-scrape" class="hidden">
+  <div class="pg-hdr"><h2>🔍 New Scrape</h2><p>Configure and launch a lead generation job</p></div>
+  <div class="card"><div class="card-h"><h3>Scrape Configuration</h3></div><div class="card-b">
+    <div class="fg"><label>Search Query</label><input class="fi" id="sq" placeholder="e.g. 'plumbers in Austin TX' or 'https://example.com'"></div>
+    <div class="fg"><label>Data Sources</label><div class="cg">
+      <label class="ci"><input type="checkbox" name="src" value="google_maps" checked><div><div class="cl">🗺️ Google Maps</div><div class="cd">Business names, phones, addresses</div></div></label>
+      <label class="ci"><input type="checkbox" name="src" value="website_contacts"><div><div class="cl">🌐 Website Contacts</div><div class="cd">Emails, phones, social links</div></div></label>
+      <label class="ci"><input type="checkbox" name="src" value="linkedin"><div><div class="cl">💼 LinkedIn People</div><div class="cd">Names, titles, locations</div></div></label>
+    </div></div>
+    <div class="fg"><label>Max Results Per Source</label><input type="number" class="fi" id="sm" value="20" min="1" max="100" style="max-width:200px"></div>
+    <button class="btn btn-p" id="btn-go" onclick="startScrape()">🚀 Start Scraping</button>
+  </div></div>
+  <div class="card hidden" id="prog"><div class="card-h"><h3>⚡ Scraping Progress</h3><span class="badge b-in" id="p-st">Running</span></div>
+  <div class="card-b">
+    <div class="flex items-center justify-between mb-4"><span class="text-sm text-muted" id="p-src">Initializing...</span><span class="text-sm" id="p-pct">0%</span></div>
+    <div class="pb"><div class="pf" id="p-fill" style="width:0%"></div></div>
+    <p class="text-sm text-muted mt-2" id="p-det">Waiting to start...</p>
+  </div></div>
+</section>
+
+<!-- HISTORY -->
+<section id="s-history" class="hidden">
+  <div class="pg-hdr"><h2>📋 Job History</h2><p>View and manage all your scraping jobs</p></div>
+  <div class="card"><div class="card-b" id="hist"><div class="es"><div class="ei">📋</div><h3>No jobs yet</h3><p>Jobs will appear here as you run scrapes</p></div></div></div>
+</section>
+
+<!-- EXPORT -->
+<section id="s-export" class="hidden">
+  <div class="pg-hdr"><h2>📥 Export Center</h2><p>Download your scraped leads in various formats</p></div>
+  <div class="card"><div class="card-h"><h3>Select Job to Export</h3></div><div class="card-b">
+    <div class="fg"><label>Job</label><select class="fi" id="ej" onchange="loadExport()"><option value="">-- Select a completed job --</option></select></div>
+    <div id="ep" class="hidden"><div class="sg" style="grid-template-columns:repeat(3,1fr)">
+      <div class="sc g"><div class="sv" id="ec">0</div><div class="sl">Total Leads</div></div>
+      <div class="sc b"><div class="sv" id="es2">0</div><div class="sl">Sources</div></div>
+      <div class="sc p"><div class="sv" id="ed">-</div><div class="sl">Completed</div></div>
+    </div>
+    <div class="flex gap-3 mt-4"><button class="btn btn-ok" onclick="dlCSV()">📄 Download CSV</button><button class="btn btn-p" onclick="dlXLSX()">📊 Download Excel</button></div></div>
+    <div id="ept" class="hidden mt-4"><div class="tw" style="max-height:400px;overflow-y:auto"><table><thead id="eth"></thead><tbody id="etb"></tbody></table></div></div>
+  </div></div>
+</section>
+
+<!-- API DOCS -->
+<section id="s-docs" class="hidden">
+  <div class="pg-hdr"><h2>📖 API Documentation</h2><p>Integrate LeadScraper Pro into your own applications</p></div>
+  <div class="card"><div class="card-h"><h3>Base URL</h3></div><div class="card-b"><pre><code id="base-url">http://localhost:5000</code></pre></div></div>
+  <div class="card"><div class="card-h"><h3>Endpoints</h3></div><div class="card-b">
+    <div class="api-ep"><div style="margin-bottom:12px"><span class="api-m post">POST</span><span class="api-p">/api/jobs</span></div><p class="text-sm text-muted mb-4">Create a new scraping job.</p><p class="text-sm" style="font-weight:600;margin-bottom:8px">Request Body:</p><pre><code>{"query": "plumbers in Austin TX", "sources": ["google_maps", "website_contacts"], "max_results": 20}</code></pre></div>
+    <div class="api-ep"><div style="margin-bottom:12px"><span class="api-m get">GET</span><span class="api-p">/api/jobs</span></div><p class="text-sm text-muted mb-4">List all scraping jobs.</p></div>
+    <div class="api-ep"><div style="margin-bottom:12px"><span class="api-m get">GET</span><span class="api-p">/api/jobs/{job_id}</span></div><p class="text-sm text-muted mb-4">Get a specific job with its leads.</p></div>
+    <div class="api-ep"><div style="margin-bottom:12px"><span class="api-m get">GET</span><span class="api-p">/api/jobs/{job_id}/leads</span></div><p class="text-sm text-muted mb-4">Get all leads for a specific job.</p></div>
+    <div class="api-ep"><div style="margin-bottom:12px"><span class="api-m get">GET</span><span class="api-p">/api/jobs/{job_id}/export/csv</span></div><p class="text-sm text-muted mb-4">Download leads as CSV.</p></div>
+    <div class="api-ep"><div style="margin-bottom:12px"><span class="api-m get">GET</span><span class="api-p">/api/jobs/{job_id}/export/xlsx</span></div><p class="text-sm text-muted mb-4">Download leads as Excel.</p></div>
+    <div class="api-ep"><div style="margin-bottom:12px"><span class="api-m get">GET</span><span class="api-p">/api/stats</span></div><p class="text-sm text-muted mb-4">Get dashboard statistics.</p></div>
+    <div class="api-ep"><div style="margin-bottom:12px"><span class="api-m post" style="background:rgba(168,85,247,.15);color:#a855f7">WS</span><span class="api-p">WebSocket: /socket.io</span></div><p class="text-sm text-muted mb-4">Real-time job progress updates via Socket.IO.</p></div>
+  </div></div>
+  <div class="card"><div class="card-h"><h3>Quick Start Examples</h3></div><div class="card-b">
+    <p class="text-sm" style="font-weight:600;margin-bottom:8px">cURL:</p>
+    <pre><code># Start a scrape
+curl -X POST http://localhost:5000/api/jobs \
+  -H "Content-Type: application/json" \
+  -d '{"query": "restaurants in NYC", "sources": ["google_maps"], "max_results": 10}'
+
+# Get results
+curl http://localhost:5000/api/jobs/{job_id}
+
+# Export as CSV
+curl -O http://localhost:5000/api/jobs/{job_id}/export/csv</code></pre>
+    <p class="text-sm mt-4" style="font-weight:600;margin-bottom:8px">Python:</p>
+    <pre><code>import requests
+
+resp = requests.post("http://localhost:5000/api/jobs", json={
+    "query": "dentists in Chicago",
+    "sources": ["google_maps", "website_contacts"],
+    "max_results": 20
+})
+job_id = resp.json()["job_id"]
+
+import time
+while True:
+    status = requests.get(f"http://localhost:5000/api/jobs/{job_id}").json()
+    if status["status"] == "completed":
+        break
+    time.sleep(2)
+
+leads = requests.get(f"http://localhost:5000/api/jobs/{job_id}/leads").json()
+print(f"Found {leads['count']} leads!")</code></pre>
+    <p class="text-sm mt-4" style="font-weight:600;margin-bottom:8px">JavaScript (fetch):</p>
+    <pre><code>const res = await fetch("/api/jobs", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ query: "lawyers in Miami", sources: ["google_maps"], max_results: 15 })
+});
+const { job_id } = await res.json();
+
+const socket = io();
+socket.emit("subscribe_job", { job_id });
+socket.on("job_update", (data) => console.log(`Progress: ${data.progress}%`));</code></pre>
+  </div></div>
+</section>
+
+</main>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.min.js"></script>
+<script>
+let jid=null,poll=null,cj=[];
+function show(n){document.querySelectorAll("main>section").forEach(s=>s.classList.add("hidden"));const e=document.getElementById("s-"+n);if(e)e.classList.remove("hidden");document.querySelectorAll(".nav-item").forEach(b=>{b.classList.remove("active");if(b.textContent.toLowerCase().includes(n.substring(0,4)))b.classList.add("active")});if(n==="dash")loadStats();if(n==="history")loadHist();if(n==="export")loadDD();if(n==="docs")setDocURL()}
+function toast(m,t="info"){const c=document.getElementById("toasts"),d=document.createElement("div");d.className="toast "+t;d.innerHTML='<span class="tm">'+m+'</span>';c.appendChild(d);setTimeout(()=>{d.style.opacity="0";d.style.transform="translateX(100%)";d.style.transition=".3s ease";setTimeout(()=>d.remove(),300)},4e3)}
+async function api(p,o={}){try{const r=await fetch(p,{headers:{"Content-Type":"application/json"},...o});return await r.json()}catch(e){toast("API error: "+e.message,"error");return null}}
+async function loadStats(){const s=await api("/api/stats");if(!s)return;anim("st-j",s.total_jobs);anim("st-l",s.total_leads);anim("st-c",s.completed_jobs);anim("st-r",s.running_jobs);loadRecent()}
+function anim(id,t){const e=document.getElementById(id),st=parseInt(e.textContent)||0,d=t-st;if(!d)return;const dur=600,t0=performance.now();function tk(n){const p=Math.min((n-t0)/dur,1);e.textContent=Math.round(st+d*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(tk)}requestAnimationFrame(tk)}
+async function loadRecent(){const j=await api("/api/jobs");if(!j||!j.length)return;const c=document.getElementById("recent"),r=j.slice(-5).reverse();c.innerHTML=r.map(x=>'<div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--bdr)"><div><div style="font-weight:600;font-size:.95rem">'+esc(x.query)+'</div><div class="text-sm text-muted">'+(x.sources?x.sources.join(", "):"–")+" · "+(x.total_leads||0)+' leads</div></div><div class="flex items-center gap-3"><span class="badge b-'+bs(x.status)+'"><span class="sd '+x.status+'"></span>'+x.status+"</span>"+(x.status==="completed"?'<button class="btn btn-sm btn-s" onclick="viewLeads(\''+x.id+"')\">View</button>":"")+'</div></div>').join("")}
+function bs(s){return{completed:"ok",running:"wn",pending:"in",failed:"er"}[s]||"in"}
+async function startScrape(){const q=document.getElementById("sq").value.trim();if(!q){toast("Please enter a search query","error");return}const src=[];document.querySelectorAll('input[name="src"]:checked').forEach(c=>src.push(c.value));if(!src.length){toast("Please select at least one source","error");return}const mx=parseInt(document.getElementById("sm").value)||20;const b=document.getElementById("btn-go");b.disabled=true;b.innerHTML='<span class="spinner"></span> Starting...';const r=await api("/api/jobs",{method:"POST",body:JSON.stringify({query:q,sources:src,max_results:mx})});if(!r||r.error){b.disabled=false;b.innerHTML="🚀 Start Scraping";toast(r?.error||"Failed to start","error");return}jid=r.job_id;toast("Job started: "+jid,"success");const pg=document.getElementById("prog");pg.classList.remove("hidden");document.getElementById("p-st").textContent="Running";document.getElementById("p-st").className="badge b-wn";document.getElementById("p-fill").style.width="0%";document.getElementById("p-pct").textContent="0%";document.getElementById("p-src").textContent="Initializing...";b.innerHTML="🚀 Start Scraping";b.disabled=false;startPoll(jid)}
+function startPoll(id){if(poll)clearInterval(poll);poll=setInterval(async()=>{const j=await api("/api/jobs/"+id);if(!j)return;updProg(j);if(j.status==="completed"||j.status==="failed"){clearInterval(poll);poll=null;if(j.status==="completed"){toast("Scrape complete! Found "+(j.total_leads||0)+" leads","success");document.getElementById("p-st").textContent="Complete";document.getElementById("p-st").className="badge b-ok"}else{toast("Scrape failed","error");document.getElementById("p-st").textContent="Failed";document.getElementById("p-st").className="badge b-er"}}},1500)}
+function updProg(j){document.getElementById("p-fill").style.width=(j.progress||0)+"%";document.getElementById("p-pct").textContent=(j.progress||0)+"%";document.getElementById("p-src").textContent=j.current_source?"Scraping: "+j.current_source:"Initializing...";document.getElementById("p-det").textContent=j.status==="completed"?"Done — "+(j.total_leads||0)+" leads found":"Running... "+(j.total_leads?"("+j.total_leads+" leads so far)":"")}
+async function loadHist(){const j=await api("/api/jobs"),c=document.getElementById("hist");if(!j||!j.length){c.innerHTML='<div class="es"><div class="ei">📋</div><h3>No jobs yet</h3><p>Jobs will appear here as you run scrapes</p></div>';return}c.innerHTML='<div class="tw"><table><thead><tr><th>Job ID</th><th>Query</th><th>Sources</th><th>Status</th><th>Leads</th><th>Actions</th></tr></thead><tbody>'+j.reverse().map(x=>'<tr><td><code style="font-size:.8rem">'+x.id+'</code></td><td>'+esc(x.query)+'</td><td>'+(x.sources||[]).map(s=>'<span class="badge b-in" style="margin:2px">'+s+'</span>').join(" ")+'</td><td><span class="badge b-'+bs(x.status)+'"><span class="sd '+x.status+'"></span>'+x.status+'</span></td><td>'+(x.total_leads||"–")+'</td><td>'+(x.status==="completed"?'<button class="btn btn-sm btn-s" onclick="viewLeads(\''+x.id+"')\">View</button> <button class=\"btn btn-sm btn-ok\" onclick=\"dlQuick('"+x.id+"')\">Export</button>":x.status==="running"?'<button class="btn btn-sm btn-s" onclick="show(\'scrape\');startPoll(\''+x.id+"')\">Track</button>":"")+'</td></tr>').join("")+'</tbody></table></div>'}
+async function viewLeads(id){show("export");document.getElementById("ej").value=id;loadExport()}
+async function loadDD(){const j=await api("/api/jobs");if(!j)return;cj=j.filter(x=>x.status==="completed");const s=document.getElementById("ej");s.innerHTML='<option value="">-- Select a completed job --</option>';cj.forEach(x=>{const o=document.createElement("option");o.value=x.id;o.textContent=x.query+" ("+(x.total_leads||0)+" leads)";s.appendChild(o)})}
+async function loadExport(){const id=document.getElementById("ej").value;if(!id){document.getElementById("ep").classList.add("hidden");document.getElementById("ept").classList.add("hidden");return}const j=await api("/api/jobs/"+id);if(!j)return;document.getElementById("ep").classList.remove("hidden");document.getElementById("ec").textContent=j.total_leads||0;document.getElementById("es2").textContent=(j.sources||[]).length;document.getElementById("ed").textContent=j.completed_at?new Date(j.completed_at).toLocaleDateString("en-US",{month:"short",day:"numeric"}):"-";if(j.leads&&j.leads.length){document.getElementById("ept").classList.remove("hidden");const ak=[];j.leads.forEach(l=>Object.keys(l).forEach(k=>{if(!ak.includes(k))ak.push(k)}));document.getElementById("eth").innerHTML="<tr>"+ak.map(k=>"<th>"+k.replace(/_/g," ")+"</th>").join("")+"</tr>";document.getElementById("etb").innerHTML=j.leads.slice(0,50).map(l=>"<tr>"+ak.map(k=>{let v=l[k];if(Array.isArray(v))v=v.join(", ");if(v==null||v===undefined)v="–";return "<td>"+esc(String(v))+"</td>"}).join("")+"</tr>").join("")}}
+function dlCSV(){const id=document.getElementById("ej").value;if(id){window.location.href="/api/jobs/"+id+"/export/csv";toast("CSV download started","success")}}
+function dlXLSX(){const id=document.getElementById("ej").value;if(id){window.location.href="/api/jobs/"+id+"/export/xlsx";toast("Excel download started","success")}}
+function dlQuick(id){window.location.href="/api/jobs/"+id+"/export/csv";toast("CSV download started","success")}
+function setDocURL(){try{document.getElementById("base-url").textContent=window.location.origin}catch(e){}}
+function esc(s){const d=document.createElement("div");d.textContent=s;return d.innerHTML}
+const socket=io();
+socket.on("connect",()=>console.log("🔌 WebSocket connected"));
+socket.on("job_update",d=>{if(d.job_id===jid)updProg(d)});
+socket.on("job_error",d=>{if(d.job_id===jid)toast("Error: "+d.error,"error")});
+document.addEventListener("DOMContentLoaded",()=>{loadStats();setDocURL()});
+</script>
+</body>
+</html>
